@@ -24,7 +24,7 @@ const router = Router();
 router.use(protect);
 
 router.get('/',              getAllHoroscopes);
-router.post('/generate',     horoscopeRateLimiter, generateHoroscope);
+router.post('/generate',     generateHoroscope);
 router.get('/:id',           getHoroscopeById);
 router.put('/:id',            updateHoroscope);
 router.delete('/:id',        deleteHoroscope);
