@@ -65,8 +65,7 @@ export const generateHoroscope = async (req, res, next) => {
       birthDate,
       birthTime,
       birthPlace: resolvedBirthPlace,
-      ...computedData,
-      createdBy: req.user._id,
+      ...computedData
     });
 
     return successResponse(res, horoscope, 'Horoscope generated successfully', 201);
@@ -94,13 +93,12 @@ export const generateHoroscope = async (req, res, next) => {
 export const getAllHoroscopes = async (req, res, next) => {
   try {
     const { page, limit, skip } = parsePagination(req.query);
-    const filter = req.user.role === 'admin' ? {} : { createdBy: req.user._id };
+    const filter = {};
 
     if (req.query.name) filter.$text = { $search: req.query.name };
 
     const [horoscopes, total] = await Promise.all([
       Horoscope.find(filter)
-        .populate('createdBy', 'name email')
         .skip(skip)
         .limit(limit)
         .sort({ createdAt: -1 })
@@ -130,12 +128,12 @@ export const getAllHoroscopes = async (req, res, next) => {
  */
 export const getHoroscopeById = async (req, res, next) => {
   try {
-    const horoscope = await Horoscope.findById(req.params.id).populate('createdBy', 'name email');
+    const horoscope = await Horoscope.findById(req.params.id);
     if (!horoscope) return errorResponse(res, 'Horoscope not found', 404);
 
-    if (req.user.role !== 'admin' && horoscope.createdBy?._id.toString() !== req.user._id.toString()) {
-      return errorResponse(res, 'Not authorised to view this horoscope', 403);
-    }
+    // if (req.user.role !== 'admin' && horoscope.createdBy?._id.toString() !== req.user._id.toString()) {
+    //   return errorResponse(res, 'Not authorised to view this horoscope', 403);
+    // }
 
     return successResponse(res, horoscope);
   } catch (err) {
@@ -157,9 +155,9 @@ export const deleteHoroscope = async (req, res, next) => {
     const horoscope = await Horoscope.findById(req.params.id);
     if (!horoscope) return errorResponse(res, 'Horoscope not found', 404);
 
-    if (req.user.role !== 'admin' && horoscope.createdBy?.toString() !== req.user._id.toString()) {
-      return errorResponse(res, 'Not authorised to delete this horoscope', 403);
-    }
+    // if (req.user.role !== 'admin' && horoscope.createdBy?.toString() !== req.user._id.toString()) {
+    //   return errorResponse(res, 'Not authorised to delete this horoscope', 403);
+    // }
 
     await horoscope.deleteOne();
     return successResponse(res, null, 'Horoscope deleted');
@@ -203,9 +201,9 @@ export const updateHoroscope = async (req, res, next) => {
     const horoscope = await Horoscope.findById(req.params.id);
     if (!horoscope) return errorResponse(res, 'Horoscope not found', 404);
 
-    if (req.user.role !== 'admin' && horoscope.createdBy?.toString() !== req.user._id.toString()) {
-      return errorResponse(res, 'Not authorised to edit this horoscope', 403);
-    }
+    // if (req.user.role !== 'admin' && horoscope.createdBy?.toString() !== req.user._id.toString()) {
+    //   return errorResponse(res, 'Not authorised to edit this horoscope', 403);
+    // }
 
     let isRecalculationNeeded = false;
     let resolvedBirthPlace = horoscope.birthPlace;
@@ -270,7 +268,7 @@ export const updateHoroscope = async (req, res, next) => {
 export const getDasha = async (req, res, next) => {
   try {
     const horoscope = await Horoscope.findById(req.params.id)
-      .select('mahadasha currentMahadasha currentAntardasha nativeName createdBy');
+      .select('mahadasha currentMahadasha currentAntardasha nativeName');
     if (!horoscope) return errorResponse(res, 'Horoscope not found', 404);
 
     if (req.user.role !== 'admin' && horoscope.createdBy?.toString() !== req.user._id.toString()) {
@@ -300,7 +298,7 @@ export const getDasha = async (req, res, next) => {
 export const getTransits = async (req, res, next) => {
   try {
     const horoscope = await Horoscope.findById(req.params.id)
-      .select('transits nativeName createdBy');
+      .select('transits nativeName');
     if (!horoscope) return errorResponse(res, 'Horoscope not found', 404);
 
     if (req.user.role !== 'admin' && horoscope.createdBy?.toString() !== req.user._id.toString()) {
@@ -325,7 +323,7 @@ export const getTransits = async (req, res, next) => {
 export const getPlanets = async (req, res, next) => {
   try {
     const horoscope = await Horoscope.findById(req.params.id)
-      .select('planets ascendantRasi ascendantDegree ascendantNakshatra nativeName createdBy');
+      .select('planets ascendantRasi ascendantDegree ascendantNakshatra nativeName');
     if (!horoscope) return errorResponse(res, 'Horoscope not found', 404);
 
     if (req.user.role !== 'admin' && horoscope.createdBy?.toString() !== req.user._id.toString()) {
