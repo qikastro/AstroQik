@@ -66,7 +66,7 @@ export const generateHoroscope = async (req, res, next) => {
       birthTime,
       birthPlace: resolvedBirthPlace,
       ...computedData,
-      createdBy: req.user._id,
+      ...(req.user?._id && { createdBy: req.user._id }),
     });
 
     return successResponse(res, horoscope, 'Horoscope generated successfully', 201);
