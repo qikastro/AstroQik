@@ -21,10 +21,11 @@ const router = Router();
  *   description: Vedic horoscope generation and retrieval
  */
 
-// router.use(protect);
+router.post('/generate',     horoscopeRateLimiter, generateHoroscope);
+
+router.use(protect);
 
 router.get('/',              getAllHoroscopes);
-router.post('/generate',     horoscopeRateLimiter, generateHoroscope);
 router.get('/:id',           getHoroscopeById);
 router.put('/:id',            updateHoroscope);
 router.delete('/:id',        deleteHoroscope);
