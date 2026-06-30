@@ -91,7 +91,7 @@ const horoscopeSchema = new mongoose.Schema({
   // Transits
   transits: [transitSchema],
   // User linkage
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true });
 
 horoscopeSchema.index({ createdBy: 1, createdAt: -1 });
