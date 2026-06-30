@@ -15,6 +15,10 @@ import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Trust one level of proxy (e.g. Render, Nginx, Heroku)
+// Required for express-rate-limit to correctly read X-Forwarded-For
+app.set('trust proxy', 1);
+
 // ── Security & Middleware ──────────────────────────────────────────────────────
 app.use(helmet());
 app.use(cors({
