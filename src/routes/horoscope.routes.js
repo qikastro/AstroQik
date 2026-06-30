@@ -21,7 +21,7 @@ const router = Router();
  *   description: Vedic horoscope generation and retrieval
  */
 
-router.use(protect);
+// router.use(protect);
 
 router.get('/',              getAllHoroscopes);
 router.post('/generate',     horoscopeRateLimiter, generateHoroscope);
