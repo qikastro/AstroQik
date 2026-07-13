@@ -8,7 +8,7 @@ const MODEL_ID = 'gemini-2.5-flash';
 /**
  * Streams a Gemini chat response as Server-Sent Events to the HTTP response.
  *
- * Key settings:
+ * Key settings
  *  - thinkingBudget: 0  → disables Gemini 2.5 Flash's extended thinking mode,
  *                         which otherwise adds 5-15s of silence before the first token.
  *  - maxOutputTokens: 8192 → allows full, detailed Vedic astrology responses
