@@ -11,6 +11,7 @@ import reportRoutes  from './routes/report.routes.js';
 import chatRoutes    from './routes/chat.routes.js';
 import insightRoutes    from './routes/insight.routes.js';
 import panchangamRoutes from './routes/panchangam.routes.js';
+import prashanaRoutes  from './routes/prashana.routes.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 import User from './models/User.model.js';
@@ -62,6 +63,7 @@ app.use('/api/reports',  reportRoutes);
 app.use('/api/chat',     chatRoutes);
 app.use('/api/insights',   insightRoutes);
 app.use('/api/panchangam', panchangamRoutes);
+app.use('/api/prashana',  prashanaRoutes);
 
 // ── Health Check ───────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
